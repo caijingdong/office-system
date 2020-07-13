@@ -1,7 +1,14 @@
 <template>
   <div class="login">
     <div class="login-wrap">
-      <div class="menu-tab"><li @click="getmenuTab(item)" v-for="item in menuTab" :key="item.id" :class="{current:active === item.text}">{{item.name}}</li></div>
+      <div class="menu-tab">
+        <li
+          @click="getmenuTab(item)"
+          v-for="item in menuTab"
+          :key="item.id"
+          :class="{current:active === item.text}"
+        >{{item.name}}</li>
+      </div>
       <el-form
         :model="ruleForm"
         status-icon
@@ -11,30 +18,30 @@
         size="medium"
         v-if="type == 1"
       >
-        <el-form-item  prop="email">
-          <label for="username">邮箱</label>
+        <el-form-item prop="email">
+          <label for="email">邮箱</label>
           <el-input v-model="ruleForm.email" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item prop="password">
-          <label for="password">密码</label>
-          <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
+        <el-form-item prop="pass">
+          <label for="pass">密码</label>
+          <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
         </el-form-item>
+        <!--         <el-form-item prop="checkPass">
+          <label for="checkPass">重复密码</label>
+          <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+        </el-form-item>-->
         <el-form-item prop="code">
           <label for="code">验证码</label>
           <el-input v-model="ruleForm.code"></el-input>
-          
         </el-form-item>
-        <el-form-item  >
-        <el-button type="info" @click="getUseinfo">获取验证码</el-button>
-          
-        </el-form-item>
-        
         <el-form-item>
-          <el-button type="primary" @click="submitForm(ruleForm)">注册</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-button type="info" @click="getUseinfo">获取验证码</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="login">登录</el-button>
         </el-form-item>
       </el-form>
-            <el-form
+      <el-form
         :model="ruleForm"
         status-icon
         :rules="rules"
@@ -43,51 +50,45 @@
         class="demo-ruleForm"
         v-if="type == 2"
       >
-        <el-form-item label="邮箱" prop="email">
-          <el-input  v-model="ruleForm.email" autocomplete="off"></el-input>
+        <el-form-item prop="email">
+          <label for="email">邮箱</label>
+          <el-input v-model="ruleForm.email" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="qq邮箱" prop="checkPass">
+        <el-form-item prop="pass">
+          <label for="pass">密码</label>
+          <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item prop="checkPass">
+          <label for="checkPass">重复密码</label>
           <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="验证码" prop="age">
-          <el-input v-model.number="ruleForm.age"></el-input>
-          
+        <el-form-item prop="code">
+          <label for="code">验证码</label>
+          <el-input v-model="ruleForm.code"></el-input>
         </el-form-item>
-        
-         
         <el-form-item>
-          <el-button type="primary" @click="submitForm1('ruleForm')">提交</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-button type="info" @click="getUseinfo">获取验证码</el-button>
         </el-form-item>
-        
+
+        <el-form-item>
+          <el-button type="primary" @click="submitForm">注册</el-button>
+        </el-form-item>
       </el-form>
-      
-     
-     
     </div>
   </div>
 </template>
 <script>
 import axios from "axios";
-import { GetSms,Login,Register} from "@/api/login.js";
+import sha1 from "sha1";
+import { GetSms, Login, Register } from "@/api/login.js";
 export default {
   components: {},
   data() {
     var checkAge = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("年龄不能为空"));
+        return callback(new Error("用户名不能为空"));
       }
-      setTimeout(() => {
-        if (!Number.isInteger(value)) {
-          callback(new Error("请输入数字值"));
-        } else {
-          if (value < 18) {
-            callback(new Error("必须年满18岁"));
-          } else {
-            callback();
-          }
-        }
-      }, 1000);
+      setTimeout(() => {}, 1000);
     };
     var validatePass = (rule, value, callback) => {
       if (value === "") {
@@ -102,8 +103,8 @@ export default {
     var validatePass2 = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请再次输入密码"));
-      } else if (value !== this.ruleForm.email) {
-        callback(new Error("输入邮箱"));
+      } else if (value !== this.ruleForm.pass) {
+        callback(new Error("两次输入密码不一致"));
       } else {
         callback();
       }
@@ -111,21 +112,21 @@ export default {
     return {
       ruleForm: {
         email: "",
-        password: "",
+        pass: "",
         code: "",
-        module: 'register'
+        checkPass: ""
       },
       rules: {
         pass: [{ validator: validatePass, trigger: "blur" }],
         checkPass: [{ validator: validatePass2, trigger: "blur" }],
-        age: [{ validator: checkAge, trigger: "blur" }]
+        email: [{ validator: checkAge, trigger: "blur" }]
       },
-      menuTab:[
-        {name:"登录",text:true,type:1},
-        {name:"注册",text:false,type:2}
+      menuTab: [
+        { name: "登录", text: true, type: 1 },
+        { name: "注册", text: false, type: 2 }
       ],
-      active:true,
-      type:1
+      active: true,
+      type: 1
     };
   },
   created() {
@@ -134,30 +135,44 @@ export default {
   computed: {},
   methods: {
     getUseinfo() {
-      GetSms({ username: "1007875197@qq.com",module: 'register' })
-      .then(res => {
-
-      }).catch(() => {
-
-      }) 
+      let codename = {
+        username: this.ruleForm.email,
+        module: "register"
+      };
+      GetSms(codename)
+        .then(res => {})
+        .catch(() => {});
     },
-    submitForm(formName) {
-      console.log(formName)
-       Register(formName)
-       .then(res => {
-         
-       })
+    //登录
+    login(){
+           let repuestData = {
+        username: this.ruleForm.email,
+        pass: sha1(this.ruleForm.pass),
+        code: this.ruleForm.code
+      };
+      Login(repuestData).then(res => {});
+
+    },
+
+    //注册
+    submitForm() {
+      let repuestData = {
+        username: this.ruleForm.email,
+        pass: sha1(this.ruleForm.pass),
+        code: this.ruleForm.code
+      };
+      Register(repuestData).then(res => {});
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    getmenuTab(item){  
-      this.menuTab.forEach((item,index) => {
-        item.text = false
-      })
-      item.text = true
-      this.type = item.type
-      console.log(this.type)
+    getmenuTab(item) {
+      this.menuTab.forEach((item, index) => {
+        item.text = false;
+      });
+      item.text = true;
+      this.type = item.type;
+      console.log(this.type);
     }
   }
 };
@@ -170,7 +185,7 @@ export default {
   color: white;
 }
 .login-wrap {
-  width: 330px;
+  width: 530px;
   margin: auto;
   margin-top: 100px;
 }
@@ -184,7 +199,6 @@ export default {
     color: #fff;
     border-radius: 2px;
     cursor: pointer;
-   
   }
   .current {
     background-color: rgba(0, 0, 0, 0.6);
@@ -195,14 +209,14 @@ export default {
   text-align: left;
   label {
     display: block;
-    margin-bottom: 3px;
+    // margin-bottom: 3px;
     font-size: 14px;
     color: #fff;
     text-align: left;
-    float:left;
+    float: left;
   }
   .item-from {
-    margin-bottom: 2px;
+    //margin-bottom: 2px;
   }
   .block {
     display: block;
