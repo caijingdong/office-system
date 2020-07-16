@@ -16,7 +16,6 @@
         ref="ruleForm"
         label-width="100px"
         size="medium"
-        v-if="type == 1"
       >
         <el-form-item prop="email">
           <label for="email">邮箱</label>
@@ -26,22 +25,29 @@
           <label for="pass">密码</label>
           <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
         </el-form-item>
-        <!--         <el-form-item prop="checkPass">
+        <el-form-item prop="checkPass" v-if="type == 2">
           <label for="checkPass">重复密码</label>
           <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
-        </el-form-item>-->
+        </el-form-item>
         <el-form-item prop="code">
           <label for="code">验证码</label>
           <el-input v-model="ruleForm.code"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="info" @click="getUseinfo">获取验证码</el-button>
+          <el-button
+            type="success"
+            @click="getUseinfo"
+            :disabled="codeButtonStatus.status"
+          >{{codeButtonStatus.text}}</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="login">登录</el-button>
+          <el-button type="primary" v-if="type == 1" @click="login">登录</el-button>
+          <el-form-item>
+            <el-button type="primary" v-if="type == 2" @click="submitForm">注册</el-button>
+          </el-form-item>
         </el-form-item>
       </el-form>
-      <el-form
+      <!--       <el-form
         :model="ruleForm"
         status-icon
         :rules="rules"
@@ -67,13 +73,13 @@
           <el-input v-model="ruleForm.code"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="info" @click="getUseinfo">获取验证码</el-button>
+          <el-button type="success" @click="getUseinfo">获取验证码</el-button>
         </el-form-item>
 
         <el-form-item>
           <el-button type="primary" @click="submitForm">注册</el-button>
         </el-form-item>
-      </el-form>
+      </el-form>-->
     </div>
   </div>
 </template>
@@ -116,6 +122,10 @@ export default {
         code: "",
         checkPass: ""
       },
+      codeButtonStatus: {
+        status: false,
+        text: "获取验证码"
+      },
       rules: {
         pass: [{ validator: validatePass, trigger: "blur" }],
         checkPass: [{ validator: validatePass2, trigger: "blur" }],
@@ -139,19 +149,42 @@ export default {
         username: this.ruleForm.email,
         module: "register"
       };
+      this.codeButtonStatus.status = true;
+      this.codeButtonStatus.text = "发送中";
       GetSms(codename)
-        .then(res => {})
+        .then(res => {
+          this.countDown(number)
+        })
         .catch(() => {});
     },
     //登录
-    login(){
-           let repuestData = {
+    login() {
+      let repuestData = {
         username: this.ruleForm.email,
         pass: sha1(this.ruleForm.pass),
         code: this.ruleForm.code
       };
-      Login(repuestData).then(res => {});
-
+      this.$router.push({ name: "User" });
+      //Login(repuestData).then(res => {});
+    },
+    //倒计时
+    countDown(number) {
+      if (timer.value) {
+        clearInterval(timer.value);
+      }
+      let time = number;
+      timer.value = setInterval(() => {
+        time--;
+        if (time === 0) {
+          clearInterval(timer.value);
+          updataButtonStatus({
+            status: false,
+            text: "再次获取"
+          });
+        } else {
+          this.codeButtonStatus.text = `倒计时${time}秒`; // es5 '倒计时' + time + '秒'
+        }
+      }, 1000);
     },
 
     //注册

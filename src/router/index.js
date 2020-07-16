@@ -20,11 +20,26 @@ Vue.use(VueRouter)
     meta:{
       name:"登录"
     },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import( '../views/login/index.vue')
+  },
+  {
+    path: '/User',
+    name: 'User',
+    hidden:true,
+    meta:{
+      name:"后台"
+    },
+    component: () => import( '../views/Info/index.vue'),
+    children:[{
+      path:'/Userindex',
+      name:'Userindex',
+      component: () => import( '../views/Info/index.vue'),
+    }
+      
+
+    ]
   }
+
 ]
 
 const router = new VueRouter({
