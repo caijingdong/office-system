@@ -164,7 +164,7 @@ export default {
         pass: sha1(this.ruleForm.pass),
         code: this.ruleForm.code
       };
-      this.$router.push({ name: "User" });
+      this.$router.push({ name: "Console" });
       //Login(repuestData).then(res => {});
     },
     //倒计时

@@ -4,38 +4,33 @@ import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: '/',
-    redirect: "login",
-    hidden: true,
-    meta: {
-      name: "主页"
-    }
+    redirect: 'login',
   },
   {
     path: '/login',
     name: 'login',
-    hidden:true,
-    meta:{
-      name:"登录"
-    },
-    component: () => import( '../views/login/index.vue')
+    component: () => import('../views/login/index.vue')
   },
   {
-    path: '/User',
-    name: 'User',
-    hidden:true,
-    meta:{
-      name:"后台"
-    },
-    component: () => import( '../views/Info/index.vue'),
-    children:[{
-      path:'/Userindex',
-      name:'Userindex',
-      component: () => import( '../views/Info/index.vue'),
-    }
-      
+    path: '/console',
+    name: 'Console',
+    redirect: 'index',
+    component: () => import('../views/Info/index.vue'),
+    children: [
+      {
+        path: '/index',
+        name: 'index',
+        component: () => import('../views/Console/index.vue'),
+      },
+      {
+        path: '/user',
+        name: 'user',
+        component: () => import('../views/User/index.vue'),
+      }
+
 
     ]
   }
@@ -43,7 +38,7 @@ Vue.use(VueRouter)
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  //mode: 'history',
   base: process.env.BASE_URL,
   routes
 })

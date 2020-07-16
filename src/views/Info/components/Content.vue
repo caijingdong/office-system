@@ -1,7 +1,7 @@
 <template>
   <div id="content-wrap">
       <router-view />
-      内容区
+      
 
   </div>
 </template>
