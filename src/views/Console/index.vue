@@ -23,10 +23,10 @@
         </div>
       </el-col>
       <el-col class="adduser" :span="4">
-         <el-button type="danger">添加用户</el-button>
+        <el-button type="danger">添加用户</el-button>
       </el-col>
     </el-row>
-    <el-table
+    <!--     <el-table
     :data="tableData"
     style="width: 100%;margin-top:20px;"
     height="100%">
@@ -61,17 +61,49 @@
       label="邮编"
       width="320">
     </el-table-column>
-  </el-table>
+    </el-table>-->
+    <TableVue :config="configTable">111</TableVue>
   </div>
 </template>
 <script>
+import TableVue from "@c/Table";
 export default {
-  components: {},
+  components: {
+    TableVue,
+  },
   data() {
     return {
       region: "",
-      key_word:"",
-      tableData: [{
+      key_word: "",
+      configTable: {
+        // 表头
+        tHead: [
+          {
+            label: "邮箱/用户名",
+            field: "email",
+            width: 200,
+          },
+          {
+            label: "真实姓名",
+            field: "name",
+            width: 120,
+          },
+          {
+            label: "手机号",
+            field: "phone",
+          },
+          {
+            label: "地区",
+            field: "address",
+          },
+          {
+            label: "角色",
+            field: "role",
+          },
+        
+        ],
+      },
+      /*       tableData: [{
           date: '2016-05-03',
           name: '王小虎',
           province: '上海',
@@ -120,7 +152,7 @@ export default {
           city: '普陀区',
           address: '上海市普陀区金沙江路 1518 弄',
           zip: 200333
-        }]
+        }] */
     };
   },
   created() {
@@ -136,13 +168,13 @@ export default {
 }
 label {
   float: left;
-  height:40px;
-  line-height:40px;  
+  height: 40px;
+  line-height: 40px;
 }
-.adduser{
-  float:right;
-  text-align:right;
-  height:40px;
-  line-height:40px;
+.adduser {
+  float: right;
+  text-align: right;
+  height: 40px;
+  line-height: 40px;
 }
 </style>
