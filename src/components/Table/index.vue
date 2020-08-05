@@ -6,7 +6,6 @@
         </el-table-column>
       <template v-for="item in config.tHead">
         <!--v-slot-->
-
         <el-table-column        
           :key="item.field"
           :prop="item.field"

@@ -15,8 +15,26 @@
               <el-col :span="4">
                 <el-input v-model="key_word" placeholder="请输入搜索的关键字"></el-input>
               </el-col>
+              <el-col :span="7">
+                <div class="label-wrap date">
+                  <label for>日期：&nbsp;&nbsp;</label>
+                  <div class="warp-content">
+                    <el-date-picker
+                      style="width: 100%;"
+                      v-model="date_value"
+                      type="datetimerange"
+                      format="yyyy 年 MM 月 dd 日"
+                      value-format="yyyy-MM-dd HH:mm:ss"
+                      align="right"
+                      start-placeholder="开始日期"
+                      end-placeholder="结束日期"
+                      :default-time="['12:00:00', '08:00:00']"
+                    ></el-date-picker>
+                  </div>
+                </div>
+              </el-col>
               <el-col :span="4">
-                <el-button type="danger">搜索</el-button>
+                <el-button type="danger" @click="getList">搜索</el-button>
               </el-col>
             </el-row>
           </div>
@@ -67,6 +85,7 @@
 </template>
 <script>
 import TableVue from "@c/Table";
+import { GetCategory, GetList, DeleteInfo } from "@/api/news";
 export default {
   components: {
     TableVue,
@@ -74,7 +93,10 @@ export default {
   data() {
     return {
       region: "",
+      pageNumber: 1,
+      pageSize: 10,
       key_word: "",
+      date_value: "",
       configTable: {
         // 表头
         tHead: [
@@ -100,7 +122,6 @@ export default {
             label: "角色",
             field: "role",
           },
-        
         ],
       },
       /*       tableData: [{
@@ -159,7 +180,25 @@ export default {
     //this.getUseinfo()
   },
   computed: {},
-  methods: {},
+  methods: {
+    getList() {
+      const { pageNumber, pageSize, region } = this;
+      let requestData = {
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+      };
+      if (region) {
+        requestData.categoryId = region;
+      }
+      GetList(requestData)
+        .then((response) => {
+
+        })
+        .catch((error) => {
+
+        });
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
