@@ -126,8 +126,19 @@ export default {
   computed: {},
   methods: {
     getList() {
+      // Array
+      var arr = [10, 20, 40, 60, 60, 0, 30];
+
+      // 排序方法
+      arr.sort((a, b) => {
+        return b - a;
+      }); //括号里不写回调函数则默认按照字母逐位升序排列
+
+      // 打印排序后的数组
+      console.log(arr); //[0, 10, 20, 30, 40, 60, 60]
+
       const { pageNumber, pageSize, region } = this;
-     // console.log(this.date_value.value[0]);
+      // console.log(this.date_value.value[0]);
       let requestData = {
         pageNumber: pageNumber,
         pageSize: pageSize,
@@ -135,14 +146,14 @@ export default {
       if (region) {
         requestData.categoryId = region;
       }
-      console.log(this.date_value.value + "获取时间")
+      // console.log(this.date_value.value + "获取时间")
       if (this.date_value.length > 0) {
         requestData.startTiem = this.date_value[0];
         requestData.endTime = this.date_value[1];
       }
       GetList(requestData)
         .then((response) => {
-          console.log(response.data.data);
+          //console.log(response.data.data);
           let data = response.data;
           this.tableData = data.data.data;
         })
@@ -153,7 +164,7 @@ export default {
       //this.dialogFormVisible = !this.dialogFormVisible
     },
     dialogInfo() {
-      console.log(999);
+      //console.log(999);
       this.dialogFormVisible = false;
     },
   },
