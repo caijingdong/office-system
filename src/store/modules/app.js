@@ -16,6 +16,7 @@ const getters = {
 
 const mutations = {  // 必须的  同步 没有回调处理事情
     SET_COLLAPSE(state) {
+        console.log(111)
         state.isCollapse = !state.isCollapse;
         // html5本地储存
         sessionStorage.setItem('isCollapse', JSON.stringify(state.isCollapse));

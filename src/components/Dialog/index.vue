@@ -49,7 +49,7 @@ export default {
   props: {
     dialogFormVisible: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     category: {
       type: Array,
@@ -78,7 +78,7 @@ export default {
   watch: {
     //监听 弹窗显示， 可以用来写 请求接口
     dialogFormVisible: {
-      handler(newVal, oldVal) {
+      handler(newVal,oldVal) {    
         this.dialog_flag = newVal;
       },
     },

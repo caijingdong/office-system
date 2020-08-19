@@ -3,12 +3,11 @@
     <el-menu
       default-active="1-4-1"
       class="el-menu-vertical-demo"
-      @open="handleOpen"
-      @close="handleClose"
       background-color="#1767ff"
       text-color="#fff"
       active-text-color="#fff"
-      style="margin-top:150px"
+      style="margin-top:100px;border-right:none"
+      :collapse="isCollapse"
     >
       <el-submenu index="1">
         <template slot="title" style="color:white;">
@@ -16,9 +15,9 @@
           <span slot="title" style="color:white;">执法行动</span>
         </template>
         <template  style="color:white;">
-          <el-menu-item style="padding-left:48px;" @click="goUser" >公安执法活动监督表</el-menu-item>
-          <el-menu-item index="1-2" style="padding-left:48px;" @click="goHome">结案方式维护</el-menu-item>
-          <el-menu-item index="1-2" style="padding-left:48px;" @click="goHome">结案方式维护</el-menu-item>              
+          <el-menu-item style="padding-left:48px;" index="1-1" @click="goUser" >公安执法活动监督表</el-menu-item>
+          <el-menu-item style="padding-left:48px;" index="1-2" @click="goHome">结案方式维护</el-menu-item>
+          <el-menu-item  style="padding-left:48px;" index="1-3" @click="goHome">结案方式维护</el-menu-item>              
         </template>
       </el-submenu>
       <el-submenu index="2">
@@ -27,8 +26,8 @@
           <span slot="title" style="color:white;">司法判决</span>
         </template>
         <template  style="color:white;">
-          <el-menu-item style="padding-left:48px;" @click="goUser" >首页</el-menu-item>
-          <el-menu-item index="1-2" style="padding-left:48px;" @click="goHome">控制台</el-menu-item>          
+          <el-menu-item style="padding-left:48px;" index="1-3" @click="goUser" >首页</el-menu-item>
+          <el-menu-item style="padding-left:48px;" index="1-4" @click="goHome">控制台</el-menu-item>          
         </template>
       </el-submenu>
       <el-submenu index="3">
@@ -37,8 +36,8 @@
           <span slot="title" style="color:white;">刑事执行</span>
         </template>
         <template  style="color:white;">
-          <el-menu-item style="padding-left:48px;" @click="goUser" >首页</el-menu-item>
-          <el-menu-item index="1-2" style="padding-left:48px;" @click="goHome">控制台</el-menu-item>          
+          <el-menu-item style="padding-left:48px;" index="1-5" @click="goUser" >首页</el-menu-item>
+          <el-menu-item style="padding-left:48px;" index="1-6" @click="goHome">控制台</el-menu-item>          
         </template>
       </el-submenu>
       <el-submenu index="4">
@@ -47,8 +46,8 @@
           <span slot="title" style="color:white;">民事行政</span>
         </template>
         <template  style="color:white;">
-          <el-menu-item style="padding-left:48px;" @click="goUser" >首页</el-menu-item>
-          <el-menu-item index="1-2" style="padding-left:48px;" @click="goHome">控制台</el-menu-item>          
+          <el-menu-item style="padding-left:48px;" index="1-7" @click="goUser" >首页</el-menu-item>
+          <el-menu-item style="padding-left:48px;" index="1-8" @click="goHome">控制台</el-menu-item>          
         </template>
       </el-submenu>
             <el-submenu index="5">
@@ -56,14 +55,11 @@
           <i class="el-icon-s-help" style="color:white;"></i>
           <span slot="title" style="color:white;">监外执行</span>
         </template>
-        <template  style="color:white;">
+<!--         <template  style="color:white;">
           <el-menu-item style="padding-left:48px;" @click="goUser" >首页</el-menu-item>
-          <el-menu-item index="1-2" style="padding-left:48px;" @click="goHome">控制台</el-menu-item>          
-        </template>
+          <el-menu-item style="padding-left:48px;" @click="goHome">控制台</el-menu-item>          
+        </template> -->
       </el-submenu>
-
-
-
     </el-menu>
   </div>
 </template>
@@ -72,20 +68,19 @@ export default {
   components: {},
   data() {
     return {
-      //isCollapse: true
+      
     };
   },
   created() {
     //this.getUseinfo()
   },
-  computed: {},
+  computed: {
+    isCollapse(){
+      return this.$store.state.app.isCollapse
+    }
+  },
   methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
-    },
+
     goUser() {
       this.$router.push({ path: "/user" });
     },
@@ -106,6 +101,12 @@ export default {
 }
 .item-list{
   padding-left:48px;
+}
+.open{
+
+}
+.close{
+  width:60px;
 }
 /* .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;

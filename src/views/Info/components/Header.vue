@@ -1,14 +1,15 @@
 <template>
   <div id="header-wrap">
-
+    <div @click="navMenuState">点击</div>
+  
     
   </div>
 </template>
 <script>
+import { mapState, mapMutations } from 'vuex'
 export default {
   components: {},
   data() {
-
     return {
     };
   },
@@ -17,7 +18,10 @@ export default {
   },
   computed: {},
   methods: {
-
+    navMenuState(){
+      this.$store.commit('app/SET_COLLAPSE')
+    }
+   
   }
 };
 </script>

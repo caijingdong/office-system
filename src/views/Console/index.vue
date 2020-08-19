@@ -108,6 +108,7 @@ export default {
   },
   created() {
     this.getList();
+    //this.addUser()
     //this.getUseinfo()
   },
 
@@ -161,6 +162,37 @@ export default {
     },
     addUser() {
       this.dialogFormVisible = true;
+      //对象数组排序
+      var arr = [
+        { name: "syy", age: 0 },
+        { name: "wxy", age: 18 },
+        { name: "slj", age: 8 },
+        { name: "wj", age: 20 },
+      ];
+
+      // 排序方法
+      function compare(property) {
+        //property:根据什么属性排序
+        return function (a, b) {
+          var value1 = a[property];
+          var value2 = b[property];
+          /*
+           * value2 - value1;  ——> 降序
+           * value1 - value2;  ——> 升序
+           */
+          return value1 - value2; //升序排序
+        };
+      }
+
+      // 打印排序后的数组
+      console.log(arr.sort(compare("age")));
+      /*
+0: {name: "syy", age: 0}
+1: {name: "slj", age: 8}
+2: {name: "wxy", age: 18}
+3: {name: "wj", age: 20}
+*/
+
       //this.dialogFormVisible = !this.dialogFormVisible
     },
     dialogInfo() {

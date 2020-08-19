@@ -1,5 +1,5 @@
 <template>
-  <div class="user">
+  <div :class="[menuStatus ? 'close' : 'open']">
         <LayoutHeader />
         <LayoutMain />
         <LayoutNav />   
@@ -13,12 +13,18 @@ export default {
   components: {LayoutHeader, LayoutMain, LayoutNav},
   data() {
     return {
+      //menuStatus:true
     };
   },
   created() {
 
   },
-  computed: {},
+  computed: {
+    menuStatus(){
+      return this.$store.state.app.isCollapse
+
+    }
+  },
   methods: {
 
   }
@@ -30,7 +36,7 @@ ul,li{
     padding:0;
     list-style: none;
 }
-.user{
+/* .user{
     .nav{
         width:240px;
         float:left;
@@ -54,6 +60,6 @@ ul,li{
         float:left;
         
     }
-}
+} */
 
 </style>
