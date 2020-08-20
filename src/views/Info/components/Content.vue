@@ -31,4 +31,15 @@ export default {
   // -webkit-box-sizing: border;
   //@include webkit(transition, all .3s ease 0s);
 }
+.open{
+  #content-wrap{
+    left:250px;
+
+  }
+}
+.close{
+  #content-wrap{
+    left:70px;
+  }
+}
 </style>

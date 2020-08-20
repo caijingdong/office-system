@@ -37,5 +37,16 @@ export default {
     box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.1);
     //@include webkit(transition, all .3s ease 0s);
 }
+.open{
+  #header-wrap{
+    left:250px;
+  }
+
+}
+.close{
+  #header-wrap{
+    left:70px;
+  }
+}
 
 </style>

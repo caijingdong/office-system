@@ -98,15 +98,21 @@ export default {
   top: 0;
   left: 0;
   height: 100vh;
+  -webkit-transition: all .3s ease 0s;
 }
 .item-list{
   padding-left:48px;
 }
 .open{
+  #nav-wrap{
+    width:250px;
+  }
 
 }
 .close{
-  width:60px;
+  #nav-wrap{
+    width:70px;
+  }
 }
 /* .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
